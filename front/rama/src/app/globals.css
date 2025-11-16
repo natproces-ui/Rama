@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  
+  /* Couleurs Fondation Rama */
+  --color-primary-purple: #8B5CF6;
+  --color-primary-teal: #14B8A6;
+  --color-primary-yellow: #D4A017;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  /* Couleurs personnalisées */
+  --color-purple-600: var(--color-primary-purple);
+  --color-purple-700: #7C3AED;
+  --color-teal-500: var(--color-primary-teal);
+  --color-teal-600: #0D9488;
+  --color-yellow-500: var(--color-primary-yellow);
+  --color-yellow-600: #B8860B;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
