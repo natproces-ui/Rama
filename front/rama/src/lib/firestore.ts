@@ -3,6 +3,9 @@ import {
   collection, 
   addDoc, 
   getDocs, 
+  getDoc,
+  doc,
+  setDoc,
   query, 
   where,
   Timestamp,
@@ -24,7 +27,6 @@ const convertTimestamp = (data: DocumentData) => {
 
 // ==================== NEWSLETTER ====================
 export const newsletterService = {
-  // Subscribe to newsletter
   async subscribe(email: string): Promise<string> {
     try {
       const q = query(
@@ -39,7 +41,7 @@ export const newsletterService = {
 
       const docRef = await addDoc(collection(db, 'newsletters'), {
         email,
-        subscribedAt: new Date(),
+        subscribedAt: Timestamp.now(),
         isActive: true
       });
       
@@ -49,7 +51,6 @@ export const newsletterService = {
     }
   },
 
-  // Get all subscribers
   async getAll(): Promise<Newsletter[]> {
     const querySnapshot = await getDocs(collection(db, 'newsletters'));
     return querySnapshot.docs.map(doc => ({
@@ -63,12 +64,34 @@ export const newsletterService = {
 export const impactStatsService = {
   // Get current stats
   async get(): Promise<ImpactStats | null> {
-    const querySnapshot = await getDocs(collection(db, 'impactStats'));
-    if (querySnapshot.empty) return null;
-    
-    return {
-      id: querySnapshot.docs[0].id,
-      ...convertTimestamp(querySnapshot.docs[0].data())
-    } as ImpactStats;
+    try {
+      // CHANGÉ ICI : 'impactStats' au lieu de 'settings'
+      const statsDocRef = doc(db, 'impactStats', 'impactStats');
+      const statsDoc = await getDoc(statsDocRef);
+      
+      if (!statsDoc.exists()) {
+        return null;
+      }
+      
+      return convertTimestamp(statsDoc.data()) as ImpactStats;
+    } catch (error) {
+      console.error('Error getting stats:', error);
+      throw error;
+    }
+  },
+
+  // Update stats
+  async update(stats: ImpactStats): Promise<void> {
+    try {
+      // CHANGÉ ICI : 'impactStats' au lieu de 'settings'
+      const statsDocRef = doc(db, 'impactStats', 'impactStats');
+      await setDoc(statsDocRef, {
+        ...stats,
+        lastUpdated: Timestamp.now()
+      });
+    } catch (error) {
+      console.error('Error updating stats:', error);
+      throw error;
+    }
   }
 };

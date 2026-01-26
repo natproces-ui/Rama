@@ -33,3 +33,28 @@ export interface ApiResponse<T> {
   error?: string;
   message?: string;
 }
+
+
+export interface NewsArticle {
+  id: string;
+  title: string;
+  excerpt: string;
+  imageUrl: string;
+  publishedAt: string;
+  isPublished?: boolean;
+  createdAt?: any;
+}
+
+// src/types/index.ts ou components.ts
+export interface NewsArticle {
+  id: string;
+  title: string;
+  excerpt: string;
+  content?: string;  // ← Ajouté
+  author?: string;   // ← Ajouté
+  category?: string; // ← Ajouté
+  imageUrl: string;
+  publishedAt: string;
+  isPublished?: boolean;
+  createdAt?: any;
+}

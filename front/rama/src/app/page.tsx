@@ -1,65 +1,123 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState, useEffect } from 'react';
+import { ImpactStats } from '@/types/components';
+
+// Layout
+
+import Footer from '@/components/layout/Footer';
+
+// Home
+import HeroSection from '@/components/home/HeroSection';
+import CTASection from '@/components/home/CTASection';
+
+// About
+import MissionSection from '@/components/about/MissionSection';
+import VisionSection from '@/components/about/VisionSection';
+import HistorySection from '@/components/about/HistorySection';
+import TeamSection from '@/components/about/TeamSection';
+
+// Fistula
+import ExplanationSection from '@/components/fistula/ExplanationSection';
+import TestimonialsSection from '@/components/fistula/TestimonialsSection';
+import ResourcesSection from '@/components/fistula/ResourcesSection';
+
+// Impact
+import ImpactSection from '@/components/impact/ImpactSection';
+
+// News & Partners
+import NewsSection from '@/components/news/NewsSection';
+import PartnersSection from '@/components/partners/PartnersSection';
+
+// Donation
+import DonationInfoSection from '@/components/donation/DonationInfoSection';
+
+// Contact
+import ContactSection from '@/components/contact/ContactSection';
+
+export default function RamaPage() {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [stats, setStats] = useState<ImpactStats>({
+    womenHelped: 500,
+    communitiesSensitized: 50,
+    medicalPartners: 20,
+    yearsOfExperience: 10
+  });
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const response = await fetch('/api/stats');
+      const data = await response.json();
+      if (data.success && data.data) {
+        setStats(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  };
+
+  const handleNewsletterSubmit = async () => {
+    if (!email || !email.includes('@')) {
+      setMessage('Veuillez entrer une adresse email valide');
+      return;
+    }
+
+    setLoading(true);
+    setMessage('');
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setMessage(data.message || 'Inscription réussie !');
+        setEmail('');
+      } else {
+        setMessage(data.error || 'Une erreur est survenue');
+      }
+    } catch (error) {
+      setMessage('Erreur lors de l\'inscription');
+    } finally {
+      setLoading(false);
+      setTimeout(() => setMessage(''), 5000);
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="min-h-screen bg-white">
+    
+      <HeroSection />
+      <MissionSection />
+      <VisionSection />
+      <ImpactSection stats={stats} />
+      <HistorySection />
+      <TeamSection />
+      <ExplanationSection />
+      <TestimonialsSection />
+      <ResourcesSection />
+      <CTASection />
+      <NewsSection />
+      <PartnersSection />
+      <DonationInfoSection />
+      <ContactSection />
+      <Footer 
+        email={email}
+        setEmail={setEmail}
+        handleNewsletterSubmit={handleNewsletterSubmit}
+        loading={loading}
+        message={message}
+      />
     </div>
   );
 }
