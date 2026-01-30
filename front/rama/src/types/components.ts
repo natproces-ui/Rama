@@ -32,6 +32,7 @@ export interface Testimonial {
   region: string;
   text: string;
   avatarUrl?: string;
+  isPublished?: boolean;  // ← Ajoutez cette ligne
 }
 
 export interface NewsArticle {
