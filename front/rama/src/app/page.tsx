@@ -8,7 +8,6 @@ import { ImpactStats } from '@/types/components';
 
 import Footer from '@/components/layout/Footer';
 
-import Header from '@/components/layout/Header';  // ← AJOUTEZ CETTE LIGNE
 
 // Home
 import HeroSection from '@/components/home/HeroSection';
@@ -99,7 +98,6 @@ export default function RamaPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header />  {/* ← AJOUTEZ CETTE LIGNE */}
     
       <HeroSection />
       <MissionSection />
