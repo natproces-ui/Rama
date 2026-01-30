@@ -1,3 +1,4 @@
+// src/app/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -64,7 +65,7 @@ export default function RamaPage() {
 
   const handleNewsletterSubmit = async () => {
     if (!email || !email.includes('@')) {
-      setMessage('Veuillez entrer une adresse email valide');
+      setMessage('Veuillez entrer une adress email valide');
       return;
     }
 
