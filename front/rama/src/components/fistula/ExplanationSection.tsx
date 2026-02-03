@@ -13,15 +13,16 @@ export default function ExplanationSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 mb-16">
-          <div>
+        {/* CORRECTION: Changement de la grille et de l'alignement */}
+        <div className="grid md:grid-cols-2 gap-8 mb-16 items-center">
+          <div className="flex items-center justify-center">
             <img 
-              src="/api/placeholder/600/400" 
-              alt="Information médicale"
-              className="rounded-xl shadow-lg"
+              src="/images/fistula-diagram.jpg" 
+              alt="Diagramme de fistule obstétricale"
+              className="rounded-xl shadow-lg w-full max-w-md object-contain"
             />
           </div>
-          <div className="flex flex-col justify-center">
+          <div>
             <h3 className="text-2xl font-bold text-gray-900 mb-4">Définition</h3>
             <p className="text-gray-600 mb-6 leading-relaxed">
               La fistule obstétricale est une lésion qui se forme entre le vagin et la vessie ou le rectum 

@@ -73,12 +73,17 @@ export default function DonationInfoSection() {
         <div className="bg-white rounded-xl p-8 shadow-lg mb-12 max-w-4xl mx-auto">
           <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Montants suggérés</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            {[5000, 10000, 25000, 50000].map((amount) => (
+            {[
+              { amount: 5000, display: '5 000' },
+              { amount: 10000, display: '10 000' },
+              { amount: 25000, display: '25 000' },
+              { amount: 50000, display: '50 000' }
+            ].map(({ amount, display }) => (
               <button
                 key={amount}
                 className="border-2 border-purple-200 hover:border-purple-600 hover:bg-purple-50 rounded-lg p-4 text-center transition"
               >
-                <div className="text-2xl font-bold text-purple-600">{amount.toLocaleString()}</div>
+                <div className="text-lg md:text-2xl font-bold text-purple-600 truncate">{display}</div>
                 <div className="text-sm text-gray-600">FCFA</div>
               </button>
             ))}
